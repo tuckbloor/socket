@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Node JS Chat</title>
+     <link href="/public/css/chat.css" rel="stylesheet">
+  </head>
+  <body>
+  <div class="container">
+    <header>
+      <p>Node JS Chat</p>
+      <input type="text" id="name"><input type="button" id="submit_name" value="Name">
+    </header>
+    <div id="sidebar">
+      <div id="no_users"></div>
+      <ul id="username"></ul>
+      <ul id="typeing"></ul>
+    </div>
+    <ul id="messages"></ul>
+    <footer>
+      <form action="">
+        <input type="text" id="m" autocomplete="off" /><button>Send</button>
+      </form>
+    </footer>
+  </div>
+
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+
+
+    <script>
+      var socket = io();
+
+      //on submit of message
+      $('form').submit(function(){
+
+        //get name and message
+        var message = $('#m').val();
+        var name  =  $('#name').val();
+
+        //clear the messages
+        if(message == '*clear') {
+          $('#messages').html('');
+          return;
+        }
+
+        var name_message  = name + ' ' + message;
+        socket.emit('message', name_message);
+
+        $('#m').val('');
+        return false;
+
+      });
+
+      //detect if space is pressed
+      if($("#m").keypress(function(e) {
+            socket.emit('typeing');
+      }))
+
+      //if a key was pressed
+      socket.on('typeing', function(user){
+        var index = $("." + user).length;
+        if(index == 0) {
+          $('#typeing').append($('<li class="' + user + '">').text(user + ' is typing'));
+          //set interval to detect if keys pressed
+          setInterval(function(user){
+            socket.emit('stopped_typing', user);
+          }, 15000);
+        }
+
+      });
+
+      //detect if focus on message input
+      $( "#m" ).focusout(function() {
+        socket.emit('stopped_typing')
+      })
+
+      // stopped typing
+      socket.on('stopped_typing', function(user) {
+        $('.' + user).remove();
+      });
+
+      //append a message
+      socket.on('message', function(msg){
+        $('#messages').append($('<li>').text(msg));
+        $('#messages').scrollTop( 10000 );
+      });
+
+      //display the number of users in the chat
+      socket.on('user', function(count){
+        $('#no_users').html($('<li>').text(count));
+      });
+
+      // delete the user from the sidebar
+      socket.on("update_online_user_names", function(username){
+        $('#messages').append($('<li>').html('user ' + username + ' left'));
+      });
+
+      //display the user names in the sidebar
+      socket.on('username', function(username){
+        $('#username').html('');
+
+          $.each(username, function(i ,v) {
+            $('#username').append($('<li>').html(v));
+          })
+      });
+
+      //delete user names from sidebar
+      socket.on('delete_username', function(username){
+        $('#username').html('');
+        $.each(username, function(i ,v) {
+          $('#username').append($('<li>').html(v));
+        })
+      });
+
+      //register your name
+      $('#submit_name').on('click', function(){
+        var name = $('#name').val();
+        if(name.length < 3) {
+          alert('name needs to be 3 characters or more');
+          return;
+        }
+
+        //hide the name input and button
+        $('#name').attr('type', 'hidden');
+        $(this).hide();
+
+        //let all users know someone new joined the chat
+        socket.emit('message', name + ' Joined The Chat');
+        socket.emit('username', name);
+
+      });
+
+      // todo helpers, upload img and display
+    </script>
+
+  </body>
+</html>

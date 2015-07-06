@@ -1,0 +1,81 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+header {
+    background-color: #eeeeee;
+    height:50px;
+}
+
+header div {
+    float: left;
+    margin: 20px;
+}
+
+header p {
+    font-size: 20px;
+    float: left;
+    margin-top: 15px;
+    margin-left: 25px;
+    margin-right: 10px;
+}
+
+header input {
+    margin-top: 15px;
+}
+
+header input[type='text'] {
+    margin-left: 50px;
+}
+
+#sidebar {
+    width: 200px;
+    height: 391px;
+    color: #000;
+    background-color: #e4e4e4;
+    float: left;
+    padding:10px;
+
+}
+
+
+
+#no_users li {
+    list-style-type: none;
+}
+
+body { font: 13px Helvetica, Arial;
+    width: 100%;
+    background-color: #fefefe;
+}
+
+.container {
+    width: 980px;
+    height: 461px;
+    background-color: #cbcbcb;
+    border: 10px solid #f1f1f1;
+    margin: 10px auto 10px auto;
+}
+
+ul#messages {
+    background-color: #b1b1b1;
+}
+
+#messages { list-style-type: none; margin: 10px 10px 10px 210px; padding: 0; height: 300px; overflow: scroll}
+#messages li { padding: 5px 10px; background-color: #eeeeee}
+#messages li:nth-child(odd) { background: #fefefe; color: #000; }
+
+footer {
+    margin-left: 210px;
+    margin-right: 10px;
+    background-color: #E4E4E4;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+form input {
+    width: 70%;
+    margin-left: 10px;
+}
+
+#m {
+    height: 40px;
+    font-size: 20px;
+}
