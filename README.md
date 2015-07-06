@@ -7,7 +7,8 @@ How to build a simple chat
 Credits
 http://socket.io/get-started/chat
 
+used the above git clone to learn more about node
+
 Install
 
-
-used the above git clone to learn more about node
+git clone https://github.com/tuckbloor/node.js-chat
