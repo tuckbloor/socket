@@ -24,7 +24,7 @@ io.on('connection', function(socket){
   count++;
   io.sockets.emit('user', 'Number Of Users ' + count );
   io.sockets.emit('user_number', count);
- 
+
   //emit a user that left
   socket.on("disconnect", function(){
     count--;
